@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model DevelopersForum.ViewModels.Profile.ProfileModel
+
+@inject UserManager<ApplicationUsers> userManager
+
+<div class="container body-content">
+    <div class="row sectionHeader">
+        <div class="sectionHeading col-md-12">
+            User Profile
+        </div>       
+    </div>
+    <div class="row" id="forumIndexContent">
+        <div class="col-md-4">
+            <div id="userProfileImage" style="background-image: url(@Model.ProfileImageUrl)"></div>
+            @if (User.Identity.Name == Model.UserName)
+            { 
+                <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="UploadPhoto">
+                    <div class="form-group row">
+                        <label asp-for="ImageUpload" class="col-md-2 col-form-label"></label>
+                        <div class="col-md-10">
+                            <div class="custom-file">
+                                <input asp-for="ImageUpload" class="form-control custom-file-input" />
+                                <label class="custom-file-label">Choose photo...</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" id="btn-profile" class="btn btn-primary">Submit</button>
+
+                    @section Scripts {
+                        <script>
+                            $(document).ready(function () {
+                                $('.custom-file-input').on("change", function () {
+                                    var fileName = $(this).val().split("\\").pop();
+                                    $(this).next('.custom-file-label').html(fileName);
+                                });
+                            });
+                        </script>
+                    }
+                </form>
+
+            }
+        </div>
+        <div class="col-md-8">
+            <span id="userName">@Model.UserName</span>
+            @if (@Model.IsAdmin)
+            {
+                <span class="isAdmin" style="display: inline-block; padding: 3px;background-color: #FFEB38; color:#000;font-family:'Roboto Mono';">Admin</span>
+            }
+            <span id="userRating">Current Rating: @Model.UserRating</span>
+            <span id="userEmailLabel">Email: @Model.Email</span>
+            <span id="userCreatedLabel">Member Since: @Model.MemberSince</span>
+        </div>
+    </div>  
+</div>

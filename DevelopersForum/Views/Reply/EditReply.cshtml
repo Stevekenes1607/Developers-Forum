@@ -1,0 +1,28 @@
+﻿@model DevelopersForum.ViewModels.Post.EditPostModel
+
+    <div class="container body-content">
+        <div class="row sectionHeader">
+            <div class="sectionHeading">
+                Edit Reply
+            </div>
+        </div>
+        <div class="row">
+            <div class="createPostSection col-md-12">
+                <form asp-action="EditReply" method="post" id="addPostForm">
+                    <input hidden asp-for="Id" />
+                    <div class="form-group">
+                        <label asp-for="Content"><strong>Reply Content</strong></label>
+                        <input asp-for="Content" class="form-control" />
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <a asp-action="Index" asp-controller="Post" class="btn btn-primary">Cancel</a>
+                    </div>
+                </form>
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>

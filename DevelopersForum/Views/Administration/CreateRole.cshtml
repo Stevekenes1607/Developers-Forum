@@ -1,0 +1,26 @@
+﻿@model DevelopersForum.ViewModels.Adminstration.CreateRoleModel
+
+<div class="container body-content">
+    <div class="row sectionHeader">
+        <div class="sectionHeading">
+            Create New Role
+        </div>
+    </div>
+    <div class="row">
+        <div class="createPostSection col-md-12">
+            <form asp-action="CreateRole" method="post" id="addPostForm">
+                <div class="form-group">
+                    <label asp-for="RoleName"><strong>Role Name</strong></label>
+                    <input asp-for="RoleName" class="form-control" placeholder="Role name..." />
+                </div>
+                <button type="submit" id="submitPostBtn" class="btn btn-submitPost">
+                    Create Role
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

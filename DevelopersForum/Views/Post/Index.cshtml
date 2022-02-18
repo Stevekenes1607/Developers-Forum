@@ -1,0 +1,105 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model DevelopersForum.ViewModels.PostIndexModel
+@inject UserManager<ApplicationUsers> usermanager
+
+
+    <div class="container body-content">
+        <div class="row postHeader">
+            <div class="postHeading col-md-12">
+                <span class="postIndexTitle">
+                    @Model.Title
+                </span>
+                <span id="headingBtn">
+                    <a asp-controller="Forum" asp-action="Topic" asp-route-id="@Model.ForumId" class="btn btn-secondary">
+                        Back to @Model.ForumName
+                    </a>
+                </span>
+            </div>
+        </div>
+
+        <div class="row" id="postIndexContent">
+            <div class="col-md-3 postAuthorContainer">
+                <div class="postAuthorImage" style="background-image: url(@Model.AuthorImageUrl);"></div>
+                <a asp-controller="Profile" asp-action="Detail" asp-route-id="@Model.AuthorId">
+                    @Model.AuthorName
+                </a>
+                <br />
+                @if (Model.IsAuthorAdmin)
+                {
+                    <span class="isAdmin smaller" style="display: inline-block; padding: 3px;background-color: #FFEB38; color:#000;font-family:'Roboto Mono';">Admin</span>
+                }
+                <br />
+                <span class="postData">@Model.Created</span>
+            </div>
+            <div class="col-md-9 postContentContainer">
+                <div class="postContent">
+                    @Html.Raw(Model.PostContent)
+                </div>
+                @if (User.Identity.Name == Model.AuthorName)
+                {
+                    <a asp-controller="Post" asp-action="EditPost" asp-route-id="@Model.Id">Edit</a>
+                    <a asp-controller="Post" asp-action="DeletePost" asp-route-id="@Model.Id">Delete</a>
+                }
+            </div>
+        </div>
+
+        <div class="row" id="replyDivider"></div>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="row" style="background-color: #3F51B5; padding: 8px;">
+                <span>
+                    <a asp-controller="Reply" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-newReply">
+                        Post Reply
+                    </a>
+                </span>
+            </div>
+        }
+
+        @if (Model.Replies.Any())
+        {
+            foreach (var reply in Model.Replies)
+            {
+                <div class="row" id="postIndexContent">
+                    <div class="col-md-3 postAuthorContainer">
+                        <div class="postAuthorImage" style="background-image: url(@reply.AuthorImageUrl);"></div>
+                        <a asp-controller="Profile" asp-action="Detail" asp-route-id="@reply.AuthorId">
+                            @reply.AuthorName
+                        </a>
+                        <br />
+                        @if (reply.IsAuthorAdmin)
+                        {
+                            <span class="isAdmin smaller" style="display: inline-block; padding: 3px;background-color: #FFEB38; color:#000;font-family:'Roboto Mono';">Admin</span>
+                        }
+                        <br />
+                        <span class="postData">@reply.Created</span>
+                    </div>
+                    <div class="col-md-9 postContentContainer">
+                        <div class="postContent">
+                            @Html.Raw(reply.ReplyContent)
+                        </div>
+                        @if (User.Identity.Name == reply.AuthorName)
+                        {
+                            <a asp-controller="Reply" asp-action="EditReply" asp-route-id="@Model.Id">Edit</a> 
+                            <a asp-controller="Reply" asp-action="DeleteReply" asp-route-id="@Model.Id">Delete</a>
+                        }
+                    </div>
+                </div>
+                <div class="row" id="replySeparator" style="height: 0.5px; margin-bottom: 1px"></div>
+            }
+
+        }
+        else
+        {
+            <div class="noPosts">
+                <h3>
+                    There are no replies to this post. <br />
+                </h3>
+            </div>
+        }
+    </div>
+
+
+
+
+
